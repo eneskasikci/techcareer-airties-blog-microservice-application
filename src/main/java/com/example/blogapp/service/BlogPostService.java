@@ -29,9 +29,13 @@ public class BlogPostService {
     }
 
     public BlogPosts createBlogPosts(BlogCreateRequests BlogPostRequest){
+        // empty byte array
+        byte[] image = new byte[0];
         BlogUsers BlogUsers = blogUsersService.getBlogUserById(BlogPostRequest.getRequest_blogUserId());
         if (BlogUsers == null){
             BlogUsers = blogUsersService.saveBlogUserFromRequest(BlogPostRequest.getRequest_blogUserId(), BlogPostRequest.getRequest_userName());
+        } else if (BlogPostRequest.getRequest_blogImage() == null){
+            BlogPostRequest.setRequest_blogImage(image);
         }
         BlogPosts toSave = new BlogPosts();
         toSave.setBlogTitle(BlogPostRequest.getRequest_blogTitle());

@@ -26,7 +26,6 @@ public class BlogPostsController {
     public BlogPostsController(BlogPostService blogPostService) {
         this.blogPostService = blogPostService;
     }
-
     // http://localhost:7777/api/blogApp/posts/createBlogPost
     @PostMapping("/createBlogPost")
     public BlogPosts createBlogPost(@RequestBody BlogCreateRequests blogCreateRequests){
@@ -85,6 +84,7 @@ public class BlogPostsController {
     }
 
     // This function is made for the Register Login Gateway
+    // http://localhost:7777/api/blogApp/posts/updatePostIfUserIsOwner
     // To update the post from the gateway request, we check if the user is the owner of the post
     @PutMapping("/updatePostIfUserIsOwner")
     public ResponseEntity<?> updatePostIfUserIsOwner(@RequestBody BlogUpdateRequest updatePost){
