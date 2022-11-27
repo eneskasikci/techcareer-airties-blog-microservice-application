@@ -1,0 +1,31 @@
+#version: '3'
+#services:
+#  blog-app:
+#    image: blog-app
+#    build: .
+#    ports:
+#      - "7777:7777"
+#    environment:
+#      MYSQL_HOST: mysqldb
+#      MYSQL_USER: root
+#      MYSQL_PASSWORD: root
+#      MYSQL_PORT: 3306
+#    restart: always
+#  mysqldb:
+#    container_name: mysqldb
+#    image: mysql:5.7
+#    ports:
+#      - "3307:3306"
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#      MYSQL_DATABASE: blog_database
+version: '3'
+
+services:
+  blogapp:
+    container_name: blogapp.jar
+    image: blogapp
+    restart: always
+    build: ./
+    ports:
+      - "7777:7777"
