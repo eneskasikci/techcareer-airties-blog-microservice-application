@@ -33,6 +33,10 @@ public class BlogPosts implements Serializable {
     @Column(name = "blogPosts_content", nullable = false, columnDefinition = "TEXT")
     private String blogContent;
 
+    @Lob
+    @Column(name = "blogImage", columnDefinition = "LONGBLOB")
+    private byte[] blogImage;
+
     @Column(name = "blogPosts_CreatedDate", nullable = false)
     private LocalDate blogCreatedDate = LocalDate.now();
 

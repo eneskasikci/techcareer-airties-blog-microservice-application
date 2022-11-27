@@ -10,5 +10,6 @@ public class BlogCreateRequests {
     private String request_blogTitle;
     private String request_blogContent;
     private String request_userName;
+    private byte[] request_blogImage;
     private Long request_blogUserId;
 }

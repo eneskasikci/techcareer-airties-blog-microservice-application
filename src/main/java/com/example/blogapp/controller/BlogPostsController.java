@@ -6,10 +6,14 @@ import com.example.blogapp.requests.BlogDeleteRequest;
 import com.example.blogapp.requests.BlogUpdateRequest;
 import com.example.blogapp.responses.BlogResponse;
 import com.example.blogapp.service.BlogPostService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,11 +48,33 @@ public class BlogPostsController {
         return blogPostService.getAllBlogPostsFromUser(userName);
     }
 
+    @PostMapping("/blogPostWithImage")
+    public BlogPosts createBlogPostWithImage(@RequestParam("request_blogTitle") String blogTitle,
+                                             @RequestParam("request_blogContent") String blogContent,
+                                             @RequestParam("request_userName") String userName,
+                                             @RequestParam("request_blogUserId") Long blogUserId,
+                                             @RequestParam("image") MultipartFile blogImage) throws IOException {
+        BlogCreateRequests blogCreateRequests = new BlogCreateRequests();
+        blogCreateRequests.setRequest_blogTitle(blogTitle);
+        blogCreateRequests.setRequest_blogContent(blogContent);
+        blogCreateRequests.setRequest_userName(userName);
+        blogCreateRequests.setRequest_blogUserId(blogUserId);
+        return blogPostService.createBlogPostWithImage(blogCreateRequests, blogImage);
+    }
+
     // After given its ID, it shows the Post
     // http://localhost:7777/api/blogApp/posts/1 -> this brings the first post in the DB if GetMapping
     @GetMapping("/{postId}")
     public BlogPosts getOnePost(@PathVariable Long postId){
         return blogPostService.getPostFromPostId(postId);
+    }
+
+    // http://localhost:7777/api/blogApp/posts/getImageFromPost/4
+    @GetMapping("/getImageFromPost/{postId}")
+    public ResponseEntity<byte[]> getImageFromPost(@PathVariable Long postId){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        return blogPostService.getImageFromPost(postId, headers);
     }
 
     // After given its ID, updates the Post

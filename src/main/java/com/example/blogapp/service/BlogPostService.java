@@ -7,10 +7,13 @@ import com.example.blogapp.requests.BlogCreateRequests;
 import com.example.blogapp.requests.BlogDeleteRequest;
 import com.example.blogapp.requests.BlogUpdateRequest;
 import com.example.blogapp.responses.BlogResponse;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -99,5 +102,31 @@ public class BlogPostService {
             return null;
         }
         return list.stream().map(BlogResponse::new).collect(Collectors.toList());
+    }
+
+    public BlogPosts createBlogPostWithImage(BlogCreateRequests blogCreateRequests, MultipartFile blogImage) throws IOException {
+        // blogImage to byte array
+        byte[] imageBytes = blogImage.getBytes();
+        blogCreateRequests.setRequest_blogImage(imageBytes);
+        BlogUsers BlogUsers = blogUsersService.getBlogUserById(blogCreateRequests.getRequest_blogUserId());
+         if (BlogUsers == null){
+                BlogUsers = blogUsersService.saveBlogUserFromRequest(blogCreateRequests.getRequest_blogUserId(), blogCreateRequests.getRequest_userName());
+         }
+         BlogPosts toSave = new BlogPosts();
+         toSave.setBlogTitle(blogCreateRequests.getRequest_blogTitle());
+         toSave.setBlogContent(blogCreateRequests.getRequest_blogContent());
+         toSave.setBlogImage(blogCreateRequests.getRequest_blogImage());
+         toSave.setBlogUsers(BlogUsers);
+         return blogPostsRepository.save(toSave);
+    }
+
+    public ResponseEntity<byte[]> getImageFromPost(Long postId, HttpHeaders headers) {
+        // decode blob to byte array to image
+        Optional<BlogPosts> post = blogPostsRepository.findById(postId);
+        if (post.isPresent()){
+            byte[] image = post.get().getBlogImage();
+            return new ResponseEntity<>(image, headers, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, headers, HttpStatus.BAD_REQUEST);
     }
 }
