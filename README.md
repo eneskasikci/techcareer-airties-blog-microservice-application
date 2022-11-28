@@ -111,10 +111,10 @@ If the given username trying to delete a post that is not his, or the there are 
 - http://localhost:7777/api/blogApp/posts/updatePostIfUserIsOwner
 
         {
-            "request_diaryUpdatedPostTitle": "updatedTitle",
-            "request_diaryUpdatedPostContent": "updatedContent"",
-            "request_diaryUpdatedPost_userName" : "eneskasikci",
-            "request_diaryUpdatedPostId" : 1
+            "request_blogUpdatedPostTitle": "updatedTitle",
+            "request_blogUpdatedPostContent": "updatedContent"",
+            "request_blogUpdatedPost_userName" : "eneskasikci",
+            "request_blogUpdatedPostId" : 1
         }
 
   This will update the post with the given username, and the postID. Made for the Register Login Gateway.
