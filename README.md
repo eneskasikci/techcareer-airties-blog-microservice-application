@@ -4,6 +4,9 @@ This is the Blog Application part of the Techcareer / Airties Cloud SW Bootcamp 
 
 Using Rest API, Spring Boot, H2 Database, Docker.
 
+The app is running in H2 Database by default, but there is a MYSQL connection details in the application.properties.
+To run it on MYSQL simply comment out the H2 database and uncomment the MYSQL connection details. 
+
 # Docker Setup
 
 Start the terminal in the project directory. Start the containers by "docker-compose up".
