@@ -1,4 +1,12 @@
-FROM openjdk:19-alpine
-ADD target/BlogApp-0.0.1-SNAPSHOT.jar blogapp.jar
+FROM eclipse-temurin:19-jdk-alpine as build
+WORKDIR /app
+COPY mvnw .
+COPY .mvn  ./.mvn
+COPY pom.xml .
+COPY src src
+RUN ./mvnw clean install -DskipTests
+
+FROM eclipse-temurin:19-jre-alpine as prod
+COPY --from=build /app/target/*.jar /app/blogapp.jar
 EXPOSE 7777
-ENTRYPOINT ["java","-jar","/blogapp.jar","-web -webAllowOthers -tcp -tcpAllowOthers -browser"]
+ENTRYPOINT ["java", "-jar", "/app/blogapp.jar"]
